@@ -26,8 +26,22 @@ jobs:
       - run: npm test --if-present
 
       # Prove the tarballs are well-formed before anything tries to publish them.
+      # `--pack-destination` does NOT create the directory — npm just opens the
+      # output path and fails ENOENT if the parent is missing.
       - name: Pack every workspace
-        run: npm pack --workspaces --pack-destination /tmp/packs
+        run: |
+          mkdir -p "$RUNNER_TEMP/packs"
+          npm pack --workspaces --pack-destination "$RUNNER_TEMP/packs"
 
       - name: Show tarball contents
-        run: for t in /tmp/packs/*.tgz; do echo "== $t"; tar -tzf "$t"; done
+        run: |
+          shopt -s nullglob
+          packs=("$RUNNER_TEMP"/packs/*.tgz)
+          if [ ${#packs[@]} -eq 0 ]; then
+            echo "no tarballs were produced" >&2
+            exit 1
+          fi
+          for t in "${packs[@]}"; do
+            echo "== $(basename "$t")"
+            tar -tzf "$t"
+          done
