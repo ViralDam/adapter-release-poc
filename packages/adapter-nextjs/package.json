@@ -1,0 +1,40 @@
+{
+  "name": "@viraldam/poc-adapter-nextjs",
+  "version": "0.1.0",
+  "description": "POC release-pipeline fixture: fake Next.js adapter with a bin. Not a real adapter.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "poc-adapter-nextjs": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViralDam/adapter-release-poc.git",
+    "directory": "packages/adapter-nextjs"
+  },
+  "homepage": "https://github.com/ViralDam/adapter-release-poc#readme",
+  "bugs": "https://github.com/ViralDam/adapter-release-poc/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@viraldam/poc-deployment-spec": "^0.1.0"
+  }
+}

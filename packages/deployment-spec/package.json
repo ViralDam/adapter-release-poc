@@ -1,0 +1,34 @@
+{
+  "name": "@viraldam/poc-deployment-spec",
+  "version": "0.1.0",
+  "description": "POC release-pipeline fixture: shared manifest types. Not a real package.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViralDam/adapter-release-poc.git",
+    "directory": "packages/deployment-spec"
+  },
+  "homepage": "https://github.com/ViralDam/adapter-release-poc#readme",
+  "bugs": "https://github.com/ViralDam/adapter-release-poc/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}
