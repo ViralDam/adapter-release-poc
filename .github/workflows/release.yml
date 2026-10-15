@@ -1,0 +1,65 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Serialize releases queue-style. Never cancel an in-flight publish — npm has no
+# transaction across N packages, so a half-published release is unrecoverable.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+# Default to nothing; each job opts in to exactly what it needs.
+permissions: {}
+
+jobs:
+  release:
+    name: version or publish
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write # changesets pushes the version commit and git tags
+      pull-requests: write # ...and opens/updates the "version packages" PR
+      id-token: write # npm trusted publishing (OIDC) + provenance signing
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # changesets diffs against the base branch
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22 # trusted publishing needs Node >= 22.14.0
+          registry-url: https://registry.npmjs.org
+
+      # The runner's bundled npm is routinely too old. Trusted publishing needs
+      # >= 11.5.1, and dist-tags over OIDC need >= 11.21.0. changeset publish
+      # always passes a tag, so 11.21.0 is the real floor.
+      - name: Pin a new enough npm
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      - run: npm ci
+
+      - run: npm run build
+
+      # If there are pending .changeset/*.md files -> opens/updates a release PR.
+      # If this push IS that PR's merge -> publishes.
+      # No NODE_AUTH_TOKEN and no NPM_TOKEN anywhere: auth is the OIDC exchange.
+      - name: Create release PR or publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: npm run version-packages
+          publish: npm run release
+          commit: "chore: version packages"
+          title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report
+        run: |
+          echo "published=${{ steps.changesets.outputs.published }}"
+          echo "${{ steps.changesets.outputs.publishedPackages }}"

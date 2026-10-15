@@ -1,0 +1,41 @@
+{
+  "name": "@viraldam/poc-adapter-astro",
+  "version": "0.1.0",
+  "description": "POC release-pipeline fixture: fake Astro adapter. Not a real adapter.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./integration": {
+      "types": "./dist/integration.d.ts",
+      "default": "./dist/integration.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViralDam/adapter-release-poc.git",
+    "directory": "packages/adapter-astro"
+  },
+  "homepage": "https://github.com/ViralDam/adapter-release-poc#readme",
+  "bugs": "https://github.com/ViralDam/adapter-release-poc/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@viraldam/poc-deployment-spec": "^0.1.0"
+  }
+}

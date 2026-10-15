@@ -1,0 +1,25 @@
+{
+  "name": "@viraldam/poc-adapters-root",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @viraldam/poc-deployment-spec && npm run build -w @viraldam/poc-adapter-astro -w @viraldam/poc-adapter-nextjs",
+    "clean": "rm -rf packages/*/dist",
+    "test": "npm run test --workspaces --if-present",
+    "changeset": "changeset",
+    "version-packages": "changeset version && npm install --package-lock-only",
+    "release": "npm run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "typescript": "^5.6.0"
+  }
+}
