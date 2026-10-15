@@ -1,8 +1,7 @@
 /**
- * Stand-in for the shared spec package: the shared output contract that every
- * adapter depends on. Exists in this POC so that the release has a real
- * intra-monorepo dependency edge — deployment-spec must reach the registry
- * before the adapters that depend on it.
+ * Shared output contract that every adapter in this fixture depends on.
+ * Exists so the release has a real intra-monorepo dependency edge: this
+ * package must reach the registry before the adapters that depend on it.
  */
 
 export type ComputeRuntime = "NodeJs-24.x";
