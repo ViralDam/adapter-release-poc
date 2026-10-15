@@ -1,6 +1,6 @@
 {
   "name": "@viraldam/poc-adapter-nextjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "POC release-pipeline fixture: fake Next.js adapter with a bin. Not a real adapter.",
   "license": "Apache-2.0",
   "type": "module",
@@ -35,6 +35,6 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@viraldam/poc-deployment-spec": "^0.1.0"
+    "@viraldam/poc-deployment-spec": "^0.2.0"
   }
 }
