@@ -13,7 +13,7 @@
     }
   },
   "bin": {
-    "poc-adapter-nextjs": "./dist/cli.js"
+    "poc-adapter-nextjs": "dist/cli.js"
   },
   "files": [
     "dist"
