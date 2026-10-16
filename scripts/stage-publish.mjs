@@ -28,6 +28,24 @@ const pkgDir = join(root, "packages");
 const run = (cmd, args, opts = {}) =>
   execFileSync(cmd, args, { encoding: "utf8", stdio: "pipe", ...opts });
 
+// ---- refuse to stage from the wrong tree -----------------------------------
+// changesets/action checks out the version branch to bump versions, leaving the
+// working tree on proposed-but-unreviewed versions. Staging from there would
+// ship versions nobody approved. Compare HEAD against the commit that actually
+// triggered this run.
+if (process.env.GITHUB_SHA) {
+  const head = run("git", ["rev-parse", "HEAD"]).trim();
+  if (head !== process.env.GITHUB_SHA) {
+    console.error(
+      `refusing to stage: HEAD is ${head} but this run was triggered by ` +
+        `${process.env.GITHUB_SHA}. An earlier step moved the working tree — ` +
+        `most likely changesets/action checked out the version branch. ` +
+        `Staging here would publish unreviewed versions.`,
+    );
+    process.exit(1);
+  }
+}
+
 // ---- discover workspaces ---------------------------------------------------
 const workspaces = readdirSync(pkgDir, { withFileTypes: true })
   .filter((d) => d.isDirectory())

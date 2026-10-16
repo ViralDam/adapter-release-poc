@@ -49,6 +49,7 @@ jobs:
       # `npm publish`, which a staging-only trusted publisher refuses. Staging
       # is handled by the next step instead.
       - name: Create or update release PR
+        id: changesets
         uses: changesets/action@v1
         with:
           version: npm run version-packages
@@ -61,5 +62,12 @@ jobs:
       # version sits in the registry but is NOT installable until a human runs
       # `npm stage approve` with 2FA — CI structurally cannot approve its own
       # release, because shortlived OIDC tokens may not run `npm stage` at all.
+      #
+      # Gated on hasChangesets: when changesets ARE pending, the action above
+      # checks out `changeset-release/main` and bumps versions in the working
+      # tree. Staging then would publish the *proposed* versions before anyone
+      # reviewed the release PR. Only stage once the PR has been merged, which
+      # is the push where no changesets remain.
       - name: Stage unpublished versions
+        if: steps.changesets.outputs.hasChangesets == 'false'
         run: node scripts/stage-publish.mjs
