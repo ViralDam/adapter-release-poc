@@ -1,6 +1,6 @@
 {
   "name": "@viraldam/poc-deployment-spec",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "POC release-pipeline fixture: shared manifest types. Not a real package.",
   "license": "Apache-2.0",
   "type": "module",
