@@ -1,5 +1,11 @@
 # @viraldam/poc-deployment-spec
 
+## 0.2.1
+
+### Patch Changes
+
+- ec46b86: Minor Bug Fixes
+
 ## 0.2.0
 
 ### Minor Changes
